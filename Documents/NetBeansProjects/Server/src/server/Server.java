@@ -44,13 +44,27 @@ public class Server {
             ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
             /*protocolo
-            Cliente ---> Hello
-            Server <--- Hello World!
+            HELLO
+            nome : string
+            sobrenome : string
+            
+            HELLOREPLY
+            OK, ERRO, PARAMERROR
+            mensagem : String
             */
             
-            String msg = input.readUTF();
-            System.out.println("Mensagem Recebida: " + '"' + msg + '"');
-            output.writeUTF("HELLO WORLD!");
+            Mensagem m = input.readObject();
+            String operacao = (String) m.getOperacao();
+            if (operacao.euqals("HELLO")) {
+                String nome = (String) m.getParam("nome");
+                String sobrenome = (String) m.getParam("sobrenome");
+                
+                Mensagem reply = new Mensagem("HELLOREPLY");
+                reply.setStatus(OK);
+                reply.setParam("mensagem", "Hello World, " + nome + sobrenome);
+            }
+            
+            output.writeObject(m);
             output.flush();
             
             //fechar streams de entrada e saída
