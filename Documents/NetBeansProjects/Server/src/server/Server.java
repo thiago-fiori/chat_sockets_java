@@ -74,10 +74,13 @@ public class Server {
             Server server = new Server();
             System.out.println("Aguardando conexão...");
             server.criarServerSocket(5555);
-            Socket socket = server.esperaConexao();//protocolo
-            System.out.println("Cliente Conectado!");
-            server.trataConexao(socket);
-            System.out.println("Cliente finalizado!");
+            while (true){
+                Socket socket = server.esperaConexao();//protocolo
+                System.out.println("Cliente Conectado!");
+                //Outro processo
+                server.trataConexao(socket);
+                System.out.println("Cliente finalizado!");
+            }
         } catch (IOException e) {
             //trata exceções
             System.out.println("Erro no servidor: " + e.getMessage());
