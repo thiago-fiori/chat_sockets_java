@@ -36,8 +36,20 @@ public class Client {
             ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
             System.out.println("Enviando mensagem...");
-            String msg = "HELLO";
-            output.writeUTF(msg);
+             /*protocolo
+            HELLO
+            nome : string
+            
+            HELLOREPLY
+            OK, ERRO, PARAMERROR
+            mensagem : String
+            */
+            Mensagem m = new Mensagem("HELLO");
+            m.setStatus();
+            m.setParam("nome", "Thiago");
+            m.setParam("sobrenome", "Fiori")
+            
+            output.writeObject(m);
             output.flush(); //libera buffer para envio
             
             System.out.println("Mensagem " + '"' + msg + '"' + " enviada");
