@@ -5,12 +5,15 @@
  */
 package server;
 
+import util.Mensagem;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import jdk.net.SocketFlow;
+import util.Status;
 
 /**
  *
@@ -33,7 +36,7 @@ public class Server {
         s.close();
     }
     
-    private void trataConexao(Socket socket) throws IOException{
+    private void trataConexao(Socket socket) throws IOException, ClassNotFoundException{
         // * Cliente -------- [Socket] -------- Servidor
         //protocolo da aplicação
         /*
@@ -53,18 +56,23 @@ public class Server {
             mensagem : String
             */
             
-            Mensagem m = input.readObject();
+            Mensagem m = (Mensagem)input.readObject();
             String operacao = (String) m.getOperacao();
-            if (operacao.euqals("HELLO")) {
+            Mensagem reply = null;
+            if (operacao.equals("HELLO")) {
                 String nome = (String) m.getParam("nome");
                 String sobrenome = (String) m.getParam("sobrenome");
                 
-                Mensagem reply = new Mensagem("HELLOREPLY");
-                reply.setStatus(OK);
-                reply.setParam("mensagem", "Hello World, " + nome + sobrenome);
+                reply = new Mensagem("HELLOREPLY");
+                if (nome == null || sobrenome == null) {
+                    reply.setStatus(Status.PARAMERROR);
+                } else {
+                    reply.setStatus(Status.OK);
+                    reply.setParam("mensagem", "Hello World, " + nome + sobrenome);
+                }
             }
             
-            output.writeObject(m);
+            output.writeObject(reply);
             output.flush();
             
             //fechar streams de entrada e saída
@@ -98,6 +106,8 @@ public class Server {
         } catch (IOException e) {
             //trata exceções
             System.out.println("Erro no servidor: " + e.getMessage());
+        } catch (ClassNotFoundException e){
+            System.out.println("Erro no cast: " + e.getMessage());
         }
     }
     
