@@ -47,14 +47,27 @@ public class Client {
             OK, ERRO, PARAMERROR
             mensagem : String
             */
+            
+            Mensagem m = new Mensagem("LOGIN");
+            m.setParam("user", "ALUNO");
+            m.setParam("pass", "ESTUDIOSO");
+            
+            output.writeObject(m);
+            output.flush();
              
+            
+            
+            m = (Mensagem)input.readObject();
+            System.out.println("Resposta: " + m);
+            
+            m = new Mensagem("DIV");
             System.out.println("Digite o operador e o operando: ");
             int i;
             int j;
             Scanner sc = new Scanner (System.in);
             i = sc.nextInt();
             j = sc.nextInt();
-            Mensagem m = new Mensagem("DIV");
+            m = new Mensagem("DIV");
             m.setParam("op1", i);
             m.setParam("op2", j);
             
@@ -65,12 +78,13 @@ public class Client {
             
             m = (Mensagem)input.readObject();
             System.out.println("Resposta: " + m);
-            if (m.getStatus() == Status.OK) {
-                float resposta = (float) m.getParam("res");
-                System.out.println("Mensagem: \n" + resposta);
-            } else {
-                System.out.println("Erro: " + m.getStatus());
-            }
+            
+            m = new Mensagem("SAIR");
+            output.writeObject(m);
+            output.flush();
+            
+            m = (Mensagem)input.readObject();
+            System.out.println("Resposta: " + m);
             
             input.close();
             output.close();
