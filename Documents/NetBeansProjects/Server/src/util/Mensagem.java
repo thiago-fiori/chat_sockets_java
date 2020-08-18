@@ -60,7 +60,7 @@ public class Mensagem implements Serializable{
         
         m += "\nParametros:\n";
         for (String p : params.keySet()) {
-            m += "\n" + p + ": " + params.get(p);
+            m +=  p + ": " + params.get(p) + "\n";
         }
         return m;
     }
