@@ -5,6 +5,7 @@
  */
 package client;
 
+import java.util.Scanner;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -46,10 +47,16 @@ public class Client {
             OK, ERRO, PARAMERROR
             mensagem : String
             */
-            Mensagem m = new Mensagem("HELLO");
-            m.setStatus(Status.SOLICITACAO);
-            m.setParam("nome", "Thiago");
-            m.setParam("sobrenome", " Fiori");
+             
+            System.out.println("Digite o operador e o operando: ");
+            int i;
+            int j;
+            Scanner sc = new Scanner (System.in);
+            i = sc.nextInt();
+            j = sc.nextInt();
+            Mensagem m = new Mensagem("DIV");
+            m.setParam("op1", i);
+            m.setParam("op2", j);
             
             output.writeObject(m);
             output.flush(); //libera buffer para envio
@@ -59,7 +66,7 @@ public class Client {
             m = (Mensagem)input.readObject();
             System.out.println("Resposta: " + m);
             if (m.getStatus() == Status.OK) {
-                String resposta = (String) m.getParam("mensagem");
+                float resposta = (float) m.getParam("res");
                 System.out.println("Mensagem: \n" + resposta);
             } else {
                 System.out.println("Erro: " + m.getStatus());
