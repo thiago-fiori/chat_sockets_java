@@ -57,6 +57,7 @@ public class Server {
             */
             
             Mensagem m = (Mensagem)input.readObject();
+            System.out.println("Mensagem do cliente: \n" + m);
             String operacao = (String) m.getOperacao();
             Mensagem reply = null;
             if (operacao.equals("HELLO")) {
@@ -69,6 +70,25 @@ public class Server {
                 } else {
                     reply.setStatus(Status.OK);
                     reply.setParam("mensagem", "Hello World, " + nome + sobrenome);
+                }
+            }
+            
+            if (operacao.equals("DIV")) {
+                try{
+                    Integer op1 = (Integer) m.getParam("op1");
+                    Integer op2 = (Integer) m.getParam("op2");
+                    //testar os dados
+                    reply = new Mensagem("DIVREPLY");
+                    if (op2 == 0) {
+                        reply.setStatus(Status.DIVZERO);
+                    } else {
+                        reply.setStatus(Status.OK);
+                        float div = (float) op1/op2;
+                        reply.setParam("res", div);
+                    }
+                } catch (Exception e){
+                    reply = new Mensagem("DIVREPLY");
+                    reply.setStatus(Status.PARAMERROR);
                 }
             }
             

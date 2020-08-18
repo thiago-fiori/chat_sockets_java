@@ -10,5 +10,5 @@ package util;
  * @author Thiag
  */
 public enum Status {
-    OK, ERROR, PARAMERROR, SOLICITACAO
+    OK, ERROR, PARAMERROR, SOLICITACAO, DIVZERO
 }
