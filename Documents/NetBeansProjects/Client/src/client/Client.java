@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.Mensagem;
+import util.Status;
 
 /**
  *
@@ -45,17 +47,23 @@ public class Client {
             mensagem : String
             */
             Mensagem m = new Mensagem("HELLO");
-            m.setStatus();
+            m.setStatus(Status.SOLICITACAO);
             m.setParam("nome", "Thiago");
-            m.setParam("sobrenome", "Fiori")
+            m.setParam("sobrenome", " Fiori");
             
             output.writeObject(m);
             output.flush(); //libera buffer para envio
             
-            System.out.println("Mensagem " + '"' + msg + '"' + " enviada");
+            System.out.println("Mensagem " + m + " enviada");
             
-            msg = input.readUTF();
-            System.out.println("Resposta: " + msg);
+            m = (Mensagem)input.readObject();
+            System.out.println("Resposta: " + m);
+            if (m.getStatus() == Status.OK) {
+                String resposta = (String) m.getParam("mensagem");
+                System.out.println("Mensagem: \n" + resposta);
+            } else {
+                System.out.println("Erro: " + m.getStatus());
+            }
             
             input.close();
             output.close();
@@ -63,6 +71,9 @@ public class Client {
             
         } catch (IOException ex) {
             System.out.println("Erro no cliente: " + ex);
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Erro no cast: " + ex.getMessage());
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         
