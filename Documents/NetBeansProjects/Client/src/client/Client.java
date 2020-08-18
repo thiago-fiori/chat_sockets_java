@@ -25,6 +25,7 @@ public class Client {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Scanner sc = new Scanner (System.in);
         try {
             /*
             1. Estabelecer Conexão com o servidor
@@ -49,8 +50,14 @@ public class Client {
             */
             
             Mensagem m = new Mensagem("LOGIN");
-            m.setParam("user", "ALUNO");
-            m.setParam("pass", "ESTUDIOSO");
+            
+            System.out.print("Login: ");
+            String usuario = sc.next();
+            System.out.print("Senha: ");
+            String senha = sc.next();
+            
+            m.setParam("user", usuario);
+            m.setParam("pass", senha);
             
             output.writeObject(m);
             output.flush();
@@ -64,7 +71,6 @@ public class Client {
             System.out.println("Digite o operador e o operando: ");
             int i;
             int j;
-            Scanner sc = new Scanner (System.in);
             i = sc.nextInt();
             j = sc.nextInt();
             m = new Mensagem("DIV");
