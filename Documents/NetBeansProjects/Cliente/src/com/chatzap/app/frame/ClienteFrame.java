@@ -61,7 +61,7 @@ public class ClienteFrame extends javax.swing.JFrame {
                     } else if(action.equals(Action.USERS_ONLINE)){
                         refreshOnline(message);
                     } 
-                }             
+                }              
             } catch (IOException ex) {
                 Logger.getLogger(ClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
